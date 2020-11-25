@@ -18,7 +18,7 @@ function App() {
   const mostHighlight = useSelector((state) => state.mostHighlightList);
 
   const socketConnect = () => {
-    socket = socketIOClient("http://localhost:5000");
+    socket = socketIOClient("https://quodaitest.herokuapp.com/");
   };
 
   const getAllIssues = async (page) => {
