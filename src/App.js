@@ -16,9 +16,10 @@ function App() {
   });
   let [mostHighlightList, setMostHighlightList] = useState([]);
   const mostHighlight = useSelector((state) => state.mostHighlightList);
+  const [serverData, setServerData] = useState();
 
   const socketConnect = () => {
-    socket = socketIOClient("http://localhost:5000");
+    socket = socketIOClient("https://quodaitest.herokuapp.com/");
   };
 
   const getAllIssues = async (page) => {
@@ -60,11 +61,14 @@ function App() {
 
   const toggleHighlight = (id, title) => {
     setHighlight({ id: id, isHighlighted: !highlight.isHighlighted });
-    socket.emit("add highlight", { id, title });
-    socket.on("receive", function (data) {
-      console.log(data, "client");
-      addHighlight(data.id, data.title);
-    });
+    if (!highlight.isHighlighted) {
+      socket.emit("add highlight", { id, title });
+      socket.on("receive", function (data) {
+        console.log(data, "client");
+        setServerData(data);
+        addHighlight(data.id, data.title);
+      });
+    }
   };
 
   const checkDoublicate = (id) => {
@@ -79,24 +83,22 @@ function App() {
   };
 
   const addHighlight = (id, title) => {
-    if (!highlight.isHighlighted) {
-      checkDoublicate(id);
-      if (mostHighlightList.length >= 5) {
-        mostHighlightList.unshift({ id, title });
-        mostHighlightList.pop();
-      } else {
-        mostHighlightList.unshift({ id, title });
-      }
-      setMostHighlightList(mostHighlightList);
-      dispatch({ type: "ADD_HIGHLIGHT", payload: mostHighlightList });
-    } else return;
+    checkDoublicate(id);
+    if (mostHighlightList.length >= 5) {
+      mostHighlightList.unshift({ id, title });
+      mostHighlightList.pop();
+    } else {
+      mostHighlightList.unshift({ id, title });
+    }
+    setMostHighlightList(mostHighlightList);
+    dispatch({ type: "ADD_HIGHLIGHT", payload: mostHighlightList });
   };
 
   useEffect(() => {
     socketConnect();
     getAllIssues();
     getIssuesByPage(page);
-  }, [page, mostHighlight]);
+  }, [page, mostHighlightList, serverData]);
 
   return (
     <div>
@@ -128,7 +130,9 @@ function App() {
         Total page: {totalPage} - Current page: {page}&nbsp;
       </div>
       <div>
-        <h4>Most highlighted:</h4>
+        <h4>
+          <span id="noti"></span> - Most highlighted:
+        </h4>
         {mostHighlight &&
           mostHighlight.length > 0 &&
           mostHighlight.map((item) => (
