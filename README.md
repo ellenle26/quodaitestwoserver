@@ -27,20 +27,20 @@ This is a simple app, so I decided to make it as simple as possible.
 2. How did you share state between components? What are the pros and cons? Why did you chose this approach?<br/>
 --> Transfering state as props to share between component.<br/>
 Pros: simple. Cons: if the project has bigger scale, transfering state as props is hard to keep track on.<br/>
-Because of the simplicity of this app, transfering state as props is more convenient.
+Because of the simplicity of this app, transfering state as props is more convenient.<br/>
 
 <br/>
-3. Did you use React hooks? Why or why not?
---> Yes. Because it is easier to declare state and using function.
+3. Did you use React hooks? Why or why not?<br/>
+--> Yes. Because it is easier to declare state and using function.<br/>
 
 <br/>
-What would you improve?
---> Adding highlights to local storage so reloading page won't affect the list.
+What would you improve?<br/>
+--> Adding highlights to local storage so reloading page won't affect the list.<br/>
 
 <br/>
-How did you prevent wasted renders?
+How did you prevent wasted renders?<br/>
 --> Devide each render part to separated components. Like, issue list is a component, and highlight list is another component, so when i change pages, highlight list don't render again.
 
 <br/>
-How did you handle side-effects (e.g. data fetching)? What are the pros and cons? Why did you chose this approach?
+How did you handle side-effects (e.g. data fetching)? What are the pros and cons? Why did you chose this approach?<br/>
 --> 
