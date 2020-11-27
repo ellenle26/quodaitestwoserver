@@ -9,7 +9,7 @@ Socket.io-client : to handle "real time" notification and highlight.
 
 ## Set up
 
-1.``npx create-react-app "appname"``<br/>
+1. ``npx create-react-app "appname"``<br/>
 2. ``npm install react-redux redux-thunk thunk socket.io-client``
 
 ## Cloning
@@ -17,7 +17,7 @@ Socket.io-client : to handle "real time" notification and highlight.
 ``gitclone https://github.com/ellenle26/quodai.git``
 
 ## Technical decision
-
+<br/>
 1. How did you implement styling? What are the pros and cons? Why did you chose this approach?<br/>
 --> Using unordered list for issue list and ordered list for highlight list, using flex box to align items.<br/>
 Pros: sample, easy to see.<br/>
