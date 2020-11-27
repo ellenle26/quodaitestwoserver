@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import socketIOClient from "socket.io-client";
+import IssueList from "./components/IssueList";
+import Pagination from "./components/Pagination";
+import MostHighlightList from "./components/MostHighlightList";
 
 let socket;
 
@@ -16,12 +19,15 @@ function App() {
   });
   let [mostHighlightList, setMostHighlightList] = useState([]);
   const mostHighlight = useSelector((state) => state.mostHighlightList);
-  const [serverData, setServerData] = useState();
+  let [serverData, setServerData] = useState();
 
+  //connect to server socket
   const socketConnect = () => {
-    socket = socketIOClient("https://quodaitest.herokuapp.com/");
+    // socket = socketIOClient("https://quodaitest.herokuapp.com/");
+    socket = socketIOClient("localhost:5000");
   };
 
+  //get total pages
   const getAllIssues = async (page) => {
     const url = `https://api.github.com/repos/rails/rails/issues`;
     const res = await fetch(url);
@@ -31,6 +37,7 @@ function App() {
     console.log(pages);
   };
 
+  //get issue by page
   const getIssuesByPage = async (page) => {
     const url = `https://api.github.com/repos/rails/rails/issues?page=${page}&per_page=5`;
     const res = await fetch(url);
@@ -39,6 +46,7 @@ function App() {
     console.log(data);
   };
 
+  //change page
   const goToPage = (change) => {
     if (change === "prev") {
       let newPage = page - 1;
@@ -59,18 +67,24 @@ function App() {
     getIssuesByPage(page);
   };
 
+  let [count, setCount] = useState(0);
+
+  // toggle highlight and add to most highlight list
   const toggleHighlight = (id, title) => {
     setHighlight({ id: id, isHighlighted: !highlight.isHighlighted });
     if (!highlight.isHighlighted) {
-      socket.emit("add highlight", { id, title });
+      socket.emit("add highlight", { id, title, count });
       socket.on("receive", function (data) {
         console.log(data, "client");
         setServerData(data);
         addHighlight(data.id, data.title);
+        setCount(data.newCount);
+        console.log(count);
       });
     }
   };
 
+  //check if issue already in hightlight, then move to top
   const checkDoublicate = (id) => {
     let idArr = [];
     mostHighlightList.forEach((item) => idArr.push(item.id));
@@ -101,45 +115,20 @@ function App() {
   }, [page, mostHighlightList, serverData]);
 
   return (
-    <div>
-      <ul>
-        {issues &&
-          issues.map((item) => (
-            <li
-              key={item.id}
-              id={item.id.toString()}
-              onClick={() => toggleHighlight(item.id, item.title)}
-            >
-              {item.id == highlight.id && highlight.isHighlighted ? (
-                <mark>
-                  {item.id} - {item.title}
-                </mark>
-              ) : (
-                <>
-                  {item.id} - {item.title}
-                </>
-              )}
-            </li>
-          ))}
-      </ul>
+    <div className="verticalCenter">
+      <img
+        src="https://miro.medium.com/max/2250/1*aFHTAkhTkyWD93-UGRttPw.png"
+        alt="logo"
+      />
       <div>
-        <button onClick={() => goToPage("prev")}>Previous</button>
-        <button onClick={() => goToPage("next")}>Next</button>
-      </div>
-      <div>
-        Total page: {totalPage} - Current page: {page}&nbsp;
-      </div>
-      <div>
-        <h4>
-          <span id="noti"></span> - Most highlighted:
-        </h4>
-        {mostHighlight &&
-          mostHighlight.length > 0 &&
-          mostHighlight.map((item) => (
-            <div>
-              {item.id} - {item.title}
-            </div>
-          ))}
+        <IssueList
+          issues={issues}
+          toggleHighlight={toggleHighlight}
+          highlight={highlight}
+        />
+        <br />
+        <Pagination goToPage={goToPage} totalPage={totalPage} page={page} />
+        <MostHighlightList mostHighlight={mostHighlight} count={count} />
       </div>
     </div>
   );
