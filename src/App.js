@@ -118,7 +118,7 @@ function App() {
   };
 
   useEffect(() => {
-    socketConnect();
+    // socketConnect();
     getAllIssues();
     getIssuesByPage(page);
   }, [page, mostHighlightList, serverData]);
