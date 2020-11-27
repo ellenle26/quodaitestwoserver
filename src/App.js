@@ -23,8 +23,7 @@ function App() {
 
   //connect to server socket
   const socketConnect = () => {
-    // socket = socketIOClient("https://quodaitest.herokuapp.com/");
-    socket = socketIOClient("localhost:5000");
+    socket = socketIOClient("https://quodaitest.herokuapp.com/");
   };
 
   //get total pages
@@ -71,17 +70,26 @@ function App() {
 
   // toggle highlight and add to most highlight list
   const toggleHighlight = (id, title) => {
-    setHighlight({ id: id, isHighlighted: !highlight.isHighlighted });
-    if (!highlight.isHighlighted) {
-      socket.emit("add highlight", { id, title, count });
-      socket.on("receive", function (data) {
-        console.log(data, "client");
-        setServerData(data);
-        addHighlight(data.id, data.title);
-        setCount(data.newCount);
-        console.log(count);
-      });
+    if (id == highlight.id) {
+      setHighlight({ id: id, isHighlighted: !highlight.isHighlighted });
+    } else {
+      setHighlight({ id: id, isHighlighted: true });
     }
+
+    //taking data not through server
+    // let newCount = count + 1;
+    // addHighlight(id, title);
+    // setCount(newCount);
+
+    //taking data from server
+    socket.emit("add highlight", { id, title, count });
+    socket.on("receive", function (data) {
+      console.log(data, "client");
+      setServerData(data);
+      addHighlight(data.id, data.title);
+      setCount(data.newCount);
+      console.log(count);
+    });
   };
 
   //check if issue already in hightlight, then move to top
