@@ -23,8 +23,7 @@ function App() {
 
   //connect to server socket
   const socketConnect = () => {
-    // socket = socketIOClient("https://quodaitest.herokuapp.com/");
-    socket = socketIOClient("localhost:5000");
+    socket = socketIOClient("https://quodaitest.herokuapp.com/");
   };
 
   //get total pages
