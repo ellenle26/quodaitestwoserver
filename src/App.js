@@ -72,24 +72,25 @@ function App() {
   const toggleHighlight = (id, title) => {
     if (id == highlight.id) {
       setHighlight({ id: id, isHighlighted: !highlight.isHighlighted });
+      return;
     } else {
       setHighlight({ id: id, isHighlighted: true });
+
+      //taking data not through server
+      // let newCount = count + 1;
+      // addHighlight(id, title);
+      // setCount(newCount);
+
+      //taking data from server
+      socket.emit("add highlight", { id, title, count });
+      socket.on("receive", function (data) {
+        console.log(data, "client");
+        setServerData(data);
+        addHighlight(data.id, data.title);
+        setCount(data.newCount);
+        console.log(count);
+      });
     }
-
-    //taking data not through server
-    // let newCount = count + 1;
-    // addHighlight(id, title);
-    // setCount(newCount);
-
-    //taking data from server
-    socket.emit("add highlight", { id, title, count });
-    socket.on("receive", function (data) {
-      console.log(data, "client");
-      setServerData(data);
-      addHighlight(data.id, data.title);
-      setCount(data.newCount);
-      console.log(count);
-    });
   };
 
   //check if issue already in hightlight, then move to top
