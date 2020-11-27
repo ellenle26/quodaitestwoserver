@@ -43,4 +43,6 @@ Because of the simplicity of this app, transfering state as props is more conven
 
 <br/>
 6. How did you handle side-effects (e.g. data fetching)? What are the pros and cons? Why did you chose this approach?<br/>
---> 
+--> Using hooks useEffect to fetch data as we want to see issue list from beginning. And, pass an array as an optional second argument to useEffect() so as to re-render if any value in that argument change.<br/>
+Pros: Auto re-render when something change.<br/>
+I choose this approach because it has the ability to perform side effects from a function use dependencies argument to control when the side-effect should run.
