@@ -22,9 +22,9 @@ function App() {
   let [serverData, setServerData] = useState();
 
   //connect to server socket
-  const socketConnect = () => {
-    socket = socketIOClient("https://quodaitest.herokuapp.com/");
-  };
+  // const socketConnect = () => {
+  //   socket = socketIOClient("https://quodaitest.herokuapp.com/");
+  // };
 
   //get total pages
   const getAllIssues = async (page) => {
@@ -77,19 +77,19 @@ function App() {
       setHighlight({ id: id, isHighlighted: true });
 
       //taking data not through server
-      // let newCount = count + 1;
-      // addHighlight(id, title);
-      // setCount(newCount);
+      let newCount = count + 1;
+      addHighlight(id, title);
+      setCount(newCount);
 
       //taking data from server
-      socket.emit("add highlight", { id, title, count });
-      socket.on("receive", function (data) {
-        console.log(data, "client");
-        setServerData(data);
-        addHighlight(data.id, data.title);
-        setCount(data.newCount);
-        console.log(count);
-      });
+      // socket.emit("add highlight", { id, title, count });
+      // socket.on("receive", function (data) {
+      //   console.log(data, "client");
+      //   setServerData(data);
+      //   addHighlight(data.id, data.title);
+      //   setCount(data.newCount);
+      //   console.log(count);
+      // });
     }
   };
 
