@@ -34,13 +34,13 @@ Because of the simplicity of this app, transfering state as props is more conven
 --> Yes. Because it is easier to declare state and using function.<br/>
 
 <br/>
-What would you improve?<br/>
+4. What would you improve?<br/>
 --> Adding highlights to local storage so reloading page won't affect the list.<br/>
 
 <br/>
-How did you prevent wasted renders?<br/>
---> Devide each render part to separated components. Like, issue list is a component, and highlight list is another component, so when i change pages, highlight list don't render again.
+5. How did you prevent wasted renders?<br/>
+--> Devide each render part to separated components. Like, issue list is a component, and highlight list is another component, so when i change pages, highlight list don't render again.<br/>
 
 <br/>
-How did you handle side-effects (e.g. data fetching)? What are the pros and cons? Why did you chose this approach?<br/>
+6. How did you handle side-effects (e.g. data fetching)? What are the pros and cons? Why did you chose this approach?<br/>
 --> 
