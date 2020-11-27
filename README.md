@@ -9,11 +9,8 @@ Socket.io-client : to handle "real time" notification and highlight.
 
 ## Set up
 
-1.```bash
-npx create-react-app "appname"
-``` 
-
-2. npm install react-redux redux-thunk thunk socket.io-client
+1.``npx create-react-app "appname"``
+2. ``npm install react-redux redux-thunk thunk socket.io-client``
 
 ## Cloning
 
